@@ -14,15 +14,16 @@ Excon.defaults[:uri_parser] = Excon::Addressable::Parser
 # creating a request, or connection object. Excon does not enforce this yet, but
 # it does print a warning, so this makes things future-proof.
 module Excon
-  VALID_REQUEST_KEYS << :expand
-  VALID_CONNECTION_KEYS << :expand
-
   module Addressable
     # Middleware
     #
     # Parses a Templated URI string and merges it with the provided variables.
     #
     class Middleware < Excon::Middleware::Base
+      def self.valid_parameter_keys
+        [:expand]
+      end
+      
       def request_call(datum)
         # we need to convert a query hash (or string) to the proper format for
         # Addressable to work with. We also need to remove the `?` character
